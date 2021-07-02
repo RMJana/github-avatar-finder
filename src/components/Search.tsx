@@ -1,9 +1,11 @@
 import React from 'react'
 import {Box, Button, Form, FormField, TextInput} from 'grommet'
+import {useAppContext} from '../context/AppContext'
 
 export const Search = () => {
   // value -> githubLogin tiene que actualizar context
   const [value, setValue] = React.useState({githubLogin: ''})
+  const [, setAppContext] = useAppContext()
 
   return (
     <Box responsive fill align="center" justify="start">
@@ -11,8 +13,14 @@ export const Search = () => {
         <Form
           value={value}
           onChange={nextValue => setValue(nextValue)}
-          onSubmit={({value: nextValue}) => console.log(nextValue)}
-          onReset={() => setValue({githubLogin: ''})}
+          onSubmit={({value: nextValue}) => {
+            setValue(nextValue)
+            setAppContext({githubLogin: nextValue.githubLogin})
+          }}
+          onReset={() => {
+            setValue({githubLogin: ''})
+            setAppContext({githubLogin: ''})
+          }}
         >
           <FormField name="githubLogin" required>
             <TextInput
