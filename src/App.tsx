@@ -2,6 +2,8 @@ import {Grommet} from 'grommet'
 import {Search} from './components/Search'
 import {Header} from './components/Header'
 import {Results} from './components/Results'
+import {QueryClient, QueryClientProvider} from 'react-query'
+import {ReactQueryDevtools} from 'react-query/devtools'
 
 const theme = {
   global: {
@@ -13,13 +15,18 @@ const theme = {
   },
 }
 
+const client = new QueryClient()
+
 function App() {
   return (
-    <Grommet theme={theme}>
-      <Header />
-      <Search />
-      <Results />
-    </Grommet>
+    <QueryClientProvider client={client}>
+      <Grommet theme={theme}>
+        <Header />
+        <Search />
+        <Results />
+      </Grommet>
+      <ReactQueryDevtools initialIsOpen />
+    </QueryClientProvider>
   )
 }
 

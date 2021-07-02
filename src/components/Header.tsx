@@ -7,7 +7,7 @@ export const Header = () => {
   return (
     <Box align="center" justify="start">
       <Heading responsive level={1} size="medium">
-        Welcome to GitHub Avatar Finder!
+        Welcome to GitHub Users Finder!
       </Heading>
     </Box>
   )

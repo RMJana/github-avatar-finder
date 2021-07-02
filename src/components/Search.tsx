@@ -1,8 +1,8 @@
 import React from 'react'
-
 import {Box, Button, Form, FormField, TextInput} from 'grommet'
 
 export const Search = () => {
+  // value -> githubLogin tiene que actualizar context
   const [value, setValue] = React.useState({githubLogin: ''})
 
   return (
