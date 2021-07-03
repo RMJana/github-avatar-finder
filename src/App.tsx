@@ -1,4 +1,4 @@
-import {Grommet} from 'grommet'
+import {Box, Grommet} from 'grommet'
 import {Search} from './components/Search'
 import {Header} from './components/Header'
 import {Results} from './components/Results'
@@ -20,16 +20,21 @@ const theme = {
 const client = new QueryClient()
 
 function App() {
-  const [context, setContext] = useState<AppContextProps>({githubLogin: ''})
+  const [context, setContext] = useState<AppContextProps>({
+    githubLogin: '',
+    submitted: false,
+  })
 
   return (
     <QueryClientProvider client={client}>
       <Grommet theme={theme}>
-        <Header />
-        <AppContext.Provider value={[context, setContext]}>
-          <Search />
-          <Results />
-        </AppContext.Provider>
+        <Box responsive align="center" justify="around">
+          <Header />
+          <AppContext.Provider value={[context, setContext]}>
+            <Search />
+            <Results />
+          </AppContext.Provider>
+        </Box>
       </Grommet>
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>

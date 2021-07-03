@@ -2,6 +2,7 @@ import React, {Dispatch, SetStateAction} from 'react'
 
 export type AppContextProps = {
   githubLogin: string
+  submitted: boolean
 }
 
 export const AppContext = React.createContext<

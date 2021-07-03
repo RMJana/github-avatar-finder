@@ -1,6 +1,9 @@
-import {Box} from 'grommet'
+import {Box, Spinner} from 'grommet'
 import {useAppContext} from '../context/AppContext'
 import {useGetGithubUsersQuery} from '../hooks/useGetGithubUsersQuery'
+
+const gradient =
+  'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(77,76,219,1) 100%)'
 
 type GithubUsers = {
   total_count: number
@@ -31,15 +34,40 @@ type GithubUser = {
 }
 
 export const Results = () => {
-  // tiene que consumir context
-  // hacer la llamada a useQuery
-  // hacer un maping de los usuarios
-  //const githubUsersQuery = useGetFreigabeDatenQuery(value.githubLogin)
   const [appContext] = useAppContext()
-  const {response} = useGetGithubUsersQuery(appContext.githubLogin)
+  const {
+    response,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useGetGithubUsersQuery(appContext.githubLogin)
 
-  const githubUsers: GithubUsers = response.data
-  console.log('githubUsers', githubUsers.total_count)
+  const githubUsers: GithubUsers = isSuccess ? response.data : undefined
+
+  if (isError)
+    return (
+      <Box responsive margin={{top: 'large', bottom: 'large'}}>
+        An Error had occured, please Reset your search and try again. 💪😎
+        {error?.message}
+      </Box>
+    )
+
+  if (isLoading)
+    return (
+      <Box responsive margin={{top: 'large', bottom: 'large'}}>
+        <Spinner
+          background={gradient}
+          size="large"
+          animation={[
+            {type: 'fadeIn', duration: 1900, size: 'large'},
+            {type: 'pulse', duration: 1450, size: 'large'},
+          ]}
+          border={false}
+        />
+      </Box>
+    )
+  console.log('githubUsers', githubUsers?.total_count)
 
   return (
     <Box responsive fill align="center" justify="start">

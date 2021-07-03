@@ -1,16 +1,22 @@
 import axios from 'axios'
 import {useQuery} from 'react-query'
+import {useAppContext} from '../context/AppContext'
 
 export const useGetGithubUsersQuery = (githubLogin: string) => {
-  const {data} = useQuery(
-    ['GithubUsers'],
+  const [appContext, setAppContext] = useAppContext()
+
+  const {data, isLoading, isSuccess, isError, error} = useQuery(
+    ['GithubUsers', appContext.githubLogin],
     async (): Promise<any> =>
-      await axios.get(`https://api.github.com/search/users?q=${githubLogin}`),
+      await axios.get(
+        `https://api.github.com/search/users?q=${appContext.githubLogin}&order=desc`,
+      ),
     {
-      enabled: githubLogin.length > 0,
+      enabled: appContext.submitted,
       onError: (error: Error) => console.log(`Error '${error.message}'`),
+      onSuccess: () => setAppContext({...appContext, submitted: false}),
     },
   )
 
-  return {response: data}
+  return {response: data, isSuccess, isLoading, isError, error}
 }
