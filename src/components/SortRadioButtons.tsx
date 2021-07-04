@@ -1,14 +1,14 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import {Box, Grommet, RadioButtonGroup} from 'grommet'
 import {grommet} from 'grommet/themes'
 import {Ascend, Descend} from 'grommet-icons'
+import {SortOption, useAppContext} from '../context/AppContext'
 
 type Props = {}
 
 export const SortRadioButtons: React.FC<Props> = () => {
-  // Set AppContext with the order to activate the sort in resulst!!
-  const [value, setValue] = useState('')
+  const [appContext, setAppContext] = useAppContext()
 
   return (
     <Grommet theme={grommet}>
@@ -22,19 +22,28 @@ export const SortRadioButtons: React.FC<Props> = () => {
               label: (
                 <>
                   Login
-                  <Ascend />
+                  <Descend />
                 </>
               ),
-              value: 'LA',
+              value: SortOption.LoginDESC,
             },
             {
               label: (
                 <>
                   Login
+                  <Ascend />
+                </>
+              ),
+              value: SortOption.LoginASC,
+            },
+            {
+              label: (
+                <>
+                  Type
                   <Descend />
                 </>
               ),
-              value: 'LD',
+              value: SortOption.TypeDESC,
             },
             {
               label: (
@@ -43,20 +52,16 @@ export const SortRadioButtons: React.FC<Props> = () => {
                   <Ascend />
                 </>
               ),
-              value: 'TA',
-            },
-            {
-              label: (
-                <>
-                  Type
-                  <Descend />
-                </>
-              ),
-              value: 'TD',
+              value: SortOption.TypeASC,
             },
           ]}
-          value={value}
-          onChange={event => setValue(event.target.value)}
+          value={appContext.sort}
+          onChange={event =>
+            setAppContext({
+              ...appContext,
+              sort: SortOption[event.target.value as keyof typeof SortOption],
+            })
+          }
         />
       </Box>
     </Grommet>

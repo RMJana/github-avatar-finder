@@ -11,6 +11,8 @@ export type AppContextProps = {
   githubLogin: string
   submitted: boolean
   sort: SortOption
+  usersPerPage: number
+  page: number
 }
 
 export const AppContext = React.createContext<

@@ -6,10 +6,15 @@ export const useGetGithubUsersQuery = (githubLogin: string) => {
   const [appContext, setAppContext] = useAppContext()
 
   const {data, isLoading, isSuccess, isError, error} = useQuery(
-    ['GithubUsers', appContext.githubLogin],
+    [
+      'GithubUsers',
+      appContext.githubLogin,
+      appContext.page,
+      appContext.usersPerPage,
+    ],
     async (): Promise<any> =>
       await axios.get(
-        `https://api.github.com/search/users?q=${appContext.githubLogin}&order=desc`,
+        `https://api.github.com/search/users?q=${appContext.githubLogin}&page=${appContext.page}&per_page=${appContext.usersPerPage}`,
       ),
     {
       enabled: appContext.submitted,

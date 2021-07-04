@@ -1,7 +1,8 @@
 import {Box, Spinner} from 'grommet'
 import React from 'react'
-import {useAppContext} from '../context/AppContext'
+import {SortOption, useAppContext} from '../context/AppContext'
 import {useGetGithubUsersQuery} from '../hooks/useGetGithubUsersQuery'
+import {GithubUser} from '../types/GithubUsers'
 
 import {AvatarList} from './AvatarList'
 import {SortRadioButtons} from './SortRadioButtons'
@@ -20,14 +21,14 @@ const gradient =
 type Props = {}
 
 export const Results: React.FC<Props> = () => {
-  const [appContext] = useAppContext()
+  const [{githubLogin, sort}] = useAppContext()
   const {
     response,
     isSuccess,
     isLoading,
     isError,
     error,
-  } = useGetGithubUsersQuery(appContext.githubLogin)
+  } = useGetGithubUsersQuery(githubLogin)
 
   const [githubUsersResponse, setGithubUsersResponse] = React.useState(
     isSuccess ? response.data : undefined,
@@ -35,9 +36,37 @@ export const Results: React.FC<Props> = () => {
 
   React.useEffect(() => {
     if (isSuccess) {
-      setGithubUsersResponse(response.data)
+      let orderedList: GithubUser[] = []
+
+      switch (sort) {
+        case SortOption.LoginASC: {
+          orderedList = response.data.items.sort(
+            (a: GithubUser, b: GithubUser) => b.login.localeCompare(a.login),
+          )
+          break
+        }
+        case SortOption.TypeASC: {
+          orderedList = response.data.items.sort(
+            (a: GithubUser, b: GithubUser) => b.type.localeCompare(a.type),
+          )
+          break
+        }
+        case SortOption.TypeDESC: {
+          orderedList = response.data.items.sort(
+            (a: GithubUser, b: GithubUser) => a.type.localeCompare(b.type),
+          )
+          break
+        }
+        default: {
+          orderedList = response.data.items.sort(
+            (a: GithubUser, b: GithubUser) => a.login.localeCompare(b.login),
+          )
+          break
+        }
+      }
+      setGithubUsersResponse({...response.data, items: orderedList})
     }
-  }, [isSuccess, response])
+  }, [isSuccess, response, sort])
 
   if (isError)
     return (

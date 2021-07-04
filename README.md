@@ -53,6 +53,11 @@ small and middle deployments, and you shouldn’t feel obligated to use this
 feature. However we understand that this tool wouldn’t be useful if you couldn’t
 customize it when you are ready for it.
 
+## Rest-API GitHub V3
+
+Sort problem -> https://docs.github.com/en/rest/reference/search#search-users
+Solution -> allow sorting per page
+
 ## React-Query
 
 Explain react-query performance
