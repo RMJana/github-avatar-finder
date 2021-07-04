@@ -2,10 +2,11 @@ import React from 'react'
 
 import {Heading} from 'grommet'
 
-// This example shows a way to perform validation across multiple fields.
-export const Header = () => {
+type Props = {}
+
+export const Header: React.FC<Props> = () => {
   return (
-    <Heading responsive level={1} size="medium">
+    <Heading responsive level={1} size="large">
       Welcome to GitHub Users Finder!
     </Heading>
   )

@@ -1,39 +1,25 @@
 import {Box, Spinner} from 'grommet'
+import React from 'react'
 import {useAppContext} from '../context/AppContext'
 import {useGetGithubUsersQuery} from '../hooks/useGetGithubUsersQuery'
+
+import {AvatarList} from './AvatarList'
+import {SortRadioButtons} from './SortRadioButtons'
+
+export const otherBoxProps = {
+  pad: '5px',
+  margin: '5px',
+  border: true,
+  round: 'xsmall',
+  background: '#ff222222',
+}
 
 const gradient =
   'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(77,76,219,1) 100%)'
 
-type GithubUsers = {
-  total_count: number
-  incomplete_results: boolean
-  items: GithubUser[]
-}
+type Props = {}
 
-type GithubUser = {
-  login: string
-  id: number
-  node_id: string
-  avatar_url: string
-  gravatar_id: string
-  url: string
-  html_url: string
-  followers_url: string
-  following_url: string
-  gists_url: string
-  starred_url: string
-  subscriptions_url: string
-  organizations_url: string
-  repos_url: string
-  events_url: string
-  received_events_url: string
-  type: string
-  site_admin: boolean
-  score: number
-}
-
-export const Results = () => {
+export const Results: React.FC<Props> = () => {
   const [appContext] = useAppContext()
   const {
     response,
@@ -43,7 +29,15 @@ export const Results = () => {
     error,
   } = useGetGithubUsersQuery(appContext.githubLogin)
 
-  const githubUsers: GithubUsers = isSuccess ? response.data : undefined
+  const [githubUsersResponse, setGithubUsersResponse] = React.useState(
+    isSuccess ? response.data : undefined,
+  )
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      setGithubUsersResponse(response.data)
+    }
+  }, [isSuccess, response])
 
   if (isError)
     return (
@@ -67,13 +61,23 @@ export const Results = () => {
         />
       </Box>
     )
-  console.log('githubUsers', githubUsers?.total_count)
 
-  return (
-    <Box responsive fill align="center" justify="start">
-      <h1>Filter</h1>
-      <h2>AvatarList</h2>
-      <h3>{appContext.githubLogin}</h3>
-    </Box>
-  )
+  if (isSuccess)
+    return (
+      <Box responsive fill align="center" justify="start">
+        <h1>
+          There {githubUsersResponse?.total_count === 1 ? 'is ' : 'are '}
+          {githubUsersResponse?.total_count} GitHuber
+          {githubUsersResponse?.total_count === 1 ? '' : 's'}!
+        </h1>
+        <Box fill align="center">
+          <SortRadioButtons />
+        </Box>
+        <AvatarList githubUsers={githubUsersResponse?.items} />
+        <Box fill {...otherBoxProps} align="center">
+          Pagination
+        </Box>
+      </Box>
+    )
+  return <></>
 }

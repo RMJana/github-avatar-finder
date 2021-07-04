@@ -2,7 +2,9 @@ import React from 'react'
 import {Box, Button, Form, FormField, TextInput} from 'grommet'
 import {useAppContext} from '../context/AppContext'
 
-export const Search = () => {
+type Props = {}
+
+export const Search: React.FC<Props> = () => {
   const [appContext, setAppContext] = useAppContext()
 
   return (
@@ -13,10 +15,14 @@ export const Search = () => {
           setAppContext({...appContext, githubLogin: nextValue.githubLogin})
         }
         onSubmit={({value: nextValue}) => {
-          setAppContext({githubLogin: nextValue.githubLogin, submitted: true})
+          setAppContext({
+            ...appContext,
+            githubLogin: nextValue.githubLogin,
+            submitted: true,
+          })
         }}
         onReset={() => {
-          setAppContext({githubLogin: '', submitted: false})
+          setAppContext({...appContext, githubLogin: '', submitted: false})
         }}
       >
         <FormField name="githubLogin" required>
