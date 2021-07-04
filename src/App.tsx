@@ -5,7 +5,7 @@ import {Results} from './components/Results'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {useState} from 'react'
-import {AppContext, AppContextProps} from './context/AppContext'
+import {AppContext, AppContextProps, SortOption} from './context/AppContext'
 
 const theme = {
   global: {
@@ -23,6 +23,7 @@ function App() {
   const [context, setContext] = useState<AppContextProps>({
     githubLogin: '',
     submitted: false,
+    sort: SortOption.LoginDESC,
   })
 
   return (

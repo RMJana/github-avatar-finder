@@ -1,8 +1,16 @@
 import React, {Dispatch, SetStateAction} from 'react'
 
+export enum SortOption {
+  LoginASC = 'LoginASC',
+  LoginDESC = 'LoginDESC',
+  TypeASC = 'TypeASC',
+  TypeDESC = 'TypeDESC',
+}
+
 export type AppContextProps = {
   githubLogin: string
   submitted: boolean
+  sort: SortOption
 }
 
 export const AppContext = React.createContext<
