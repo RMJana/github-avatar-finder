@@ -1,25 +1,11 @@
-import {
-  Box,
-  Pagination,
-  Paragraph,
-  RadioButtonGroup,
-  Spinner,
-  Text,
-} from 'grommet'
+import {Box, Pagination, Paragraph, Spinner} from 'grommet'
 import React from 'react'
 import {SortOption, useAppContext} from '../context/AppContext'
 import {useGetGithubUsersQuery} from '../hooks/useGetGithubUsersQuery'
 import {GithubUser} from '../types/GithubUsers'
 import {AvatarList} from './AvatarList'
 import {SortRadioButtons} from './SortRadioButtons'
-
-export const otherBoxProps = {
-  pad: '5px',
-  margin: '5px',
-  border: true,
-  round: 'xsmall',
-  background: '#ff222222',
-}
+import {UsersPerPageIndex} from './UsersPerPageIndex'
 
 const gradient =
   'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(77,76,219,1) 100%)'
@@ -41,8 +27,6 @@ export const Results: React.FC<Props> = () => {
   const [githubUsersResponse, setGithubUsersResponse] = React.useState(
     isSuccess ? response.data : undefined,
   )
-
-  // Probar de nuevo el cleanup con setGithubUsers
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -132,37 +116,8 @@ export const Results: React.FC<Props> = () => {
                   setAppContext({...appContext, submitted: true, page})
                 }}
               />
-              <Box margin="medium" gap="small" direction="row" align="center">
-                <Text>Users per page:</Text>
-                <RadioButtonGroup
-                  name="radio"
-                  direction="row"
-                  gap="medium"
-                  options={[
-                    {
-                      label: '9',
-                      value: '9',
-                    },
-                    {
-                      label: '18',
-                      value: '18',
-                    },
-                    {
-                      label: '27',
-                      value: '27',
-                    },
-                  ]}
-                  value={usersPerPage}
-                  onChange={event =>
-                    setAppContext({
-                      ...appContext,
-                      usersPerPage: event.target.value,
-                      usersPerPageChanged: true,
-                    })
-                  }
-                />
-              </Box>
-            </Box>{' '}
+              <UsersPerPageIndex />
+            </Box>
           </>
         ) : (
           <></>
