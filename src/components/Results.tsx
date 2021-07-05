@@ -1,9 +1,15 @@
-import {Box, Spinner} from 'grommet'
+import {
+  Box,
+  Pagination,
+  Paragraph,
+  RadioButtonGroup,
+  Spinner,
+  Text,
+} from 'grommet'
 import React from 'react'
 import {SortOption, useAppContext} from '../context/AppContext'
 import {useGetGithubUsersQuery} from '../hooks/useGetGithubUsersQuery'
 import {GithubUser} from '../types/GithubUsers'
-
 import {AvatarList} from './AvatarList'
 import {SortRadioButtons} from './SortRadioButtons'
 
@@ -21,18 +27,22 @@ const gradient =
 type Props = {}
 
 export const Results: React.FC<Props> = () => {
-  const [{githubLogin, sort}] = useAppContext()
+  const [appContext, setAppContext] = useAppContext()
+  const {sort, page, usersPerPage} = appContext
+
   const {
     response,
     isSuccess,
     isLoading,
     isError,
     error,
-  } = useGetGithubUsersQuery(githubLogin)
+  } = useGetGithubUsersQuery()
 
   const [githubUsersResponse, setGithubUsersResponse] = React.useState(
     isSuccess ? response.data : undefined,
   )
+
+  // Probar de nuevo el cleanup con setGithubUsers
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -68,13 +78,18 @@ export const Results: React.FC<Props> = () => {
     }
   }, [isSuccess, response, sort])
 
-  if (isError)
+  if (isError) {
     return (
-      <Box responsive margin={{top: 'large', bottom: 'large'}}>
-        An Error had occured, please Reset your search and try again. 💪😎
-        {error?.message}
+      <Box margin={{top: 'large', bottom: 'large'}}>
+        <Paragraph responsive textAlign="center">
+          An Error had occured, please Reset your search and try again. 💪😎
+        </Paragraph>
+        <Paragraph responsive textAlign="center">
+          GitHub API v3 is responding: {error?.response?.data.message}
+        </Paragraph>
       </Box>
     )
+  }
 
   if (isLoading)
     return (
@@ -99,13 +114,59 @@ export const Results: React.FC<Props> = () => {
           {githubUsersResponse?.total_count} GitHuber
           {githubUsersResponse?.total_count === 1 ? '' : 's'}!
         </h1>
-        <Box fill align="center">
-          <SortRadioButtons />
-        </Box>
-        <AvatarList githubUsers={githubUsersResponse?.items} />
-        <Box fill {...otherBoxProps} align="center">
-          Pagination
-        </Box>
+        {githubUsersResponse?.total_count > 0 ? (
+          <>
+            <Box fill align="center">
+              <SortRadioButtons />
+            </Box>
+            <AvatarList githubUsers={githubUsersResponse?.items} />
+            <Box fill align="center">
+              <Pagination
+                step={Number(usersPerPage)}
+                numberEdgePages={2}
+                page={page}
+                numberMiddlePages={4}
+                alignSelf="center"
+                numberItems={githubUsersResponse?.total_count}
+                onChange={({page}) => {
+                  setAppContext({...appContext, submitted: true, page})
+                }}
+              />
+              <Box margin="medium" gap="small" direction="row" align="center">
+                <Text>Users per page:</Text>
+                <RadioButtonGroup
+                  name="radio"
+                  direction="row"
+                  gap="medium"
+                  options={[
+                    {
+                      label: '9',
+                      value: '9',
+                    },
+                    {
+                      label: '18',
+                      value: '18',
+                    },
+                    {
+                      label: '27',
+                      value: '27',
+                    },
+                  ]}
+                  value={usersPerPage}
+                  onChange={event =>
+                    setAppContext({
+                      ...appContext,
+                      usersPerPage: event.target.value,
+                      usersPerPageChanged: true,
+                    })
+                  }
+                />
+              </Box>
+            </Box>{' '}
+          </>
+        ) : (
+          <></>
+        )}
       </Box>
     )
   return <></>

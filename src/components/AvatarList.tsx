@@ -12,7 +12,7 @@ import {
 import {GithubUser} from '../types/GithubUsers'
 
 type Props = {
-  githubUsers: GithubUser[]
+  githubUsers: GithubUser[] | undefined
 }
 
 export const AvatarList: React.FC<Props> = ({githubUsers}) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Box, Button, Form, FormField, TextInput} from 'grommet'
-import {useAppContext} from '../context/AppContext'
+import {SortOption, useAppContext} from '../context/AppContext'
 
 type Props = {}
 
@@ -19,10 +19,19 @@ export const Search: React.FC<Props> = () => {
             ...appContext,
             githubLogin: nextValue.githubLogin,
             submitted: true,
+            usersPerPage: '9',
+            page: 1,
           })
         }}
         onReset={() => {
-          setAppContext({...appContext, githubLogin: '', submitted: false})
+          setAppContext({
+            githubLogin: '',
+            submitted: false,
+            sort: SortOption.LoginDESC,
+            usersPerPage: '9',
+            usersPerPageChanged: false,
+            page: 1,
+          })
         }}
       >
         <FormField name="githubLogin" required>

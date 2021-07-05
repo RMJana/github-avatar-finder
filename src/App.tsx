@@ -24,7 +24,8 @@ function App() {
     githubLogin: '',
     submitted: false,
     sort: SortOption.LoginDESC,
-    usersPerPage: 9,
+    usersPerPage: '9',
+    usersPerPageChanged: false,
     page: 1,
   })
 

@@ -1,11 +1,14 @@
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {useQuery} from 'react-query'
 import {useAppContext} from '../context/AppContext'
 
-export const useGetGithubUsersQuery = (githubLogin: string) => {
+export const useGetGithubUsersQuery = () => {
   const [appContext, setAppContext] = useAppContext()
 
-  const {data, isLoading, isSuccess, isError, error} = useQuery(
+  const {data, isLoading, isSuccess, isError, error} = useQuery<
+    any,
+    AxiosError
+  >(
     [
       'GithubUsers',
       appContext.githubLogin,
@@ -17,9 +20,14 @@ export const useGetGithubUsersQuery = (githubLogin: string) => {
         `https://api.github.com/search/users?q=${appContext.githubLogin}&page=${appContext.page}&per_page=${appContext.usersPerPage}`,
       ),
     {
-      enabled: appContext.submitted,
-      onError: (error: Error) => console.log(`Error '${error.message}'`),
-      onSuccess: () => setAppContext({...appContext, submitted: false}),
+      enabled: appContext.submitted || appContext.usersPerPageChanged,
+      onError: (error: Error) => console.error(`Error '${error.message}'`),
+      onSuccess: () =>
+        setAppContext({
+          ...appContext,
+          submitted: false,
+          usersPerPageChanged: false,
+        }),
     },
   )
 
