@@ -36,25 +36,25 @@ export const Results: React.FC<Props> = () => {
       switch (sort) {
         case SortOption.LoginASC: {
           orderedList = response.data.items.sort(
-            (a: GithubUser, b: GithubUser) => b.login.localeCompare(a.login),
+            (a: GithubUser, b: GithubUser) => a.login.localeCompare(b.login),
           )
           break
         }
         case SortOption.TypeASC: {
           orderedList = response.data.items.sort(
-            (a: GithubUser, b: GithubUser) => b.type.localeCompare(a.type),
+            (a: GithubUser, b: GithubUser) => a.type.localeCompare(b.type),
           )
           break
         }
         case SortOption.TypeDESC: {
           orderedList = response.data.items.sort(
-            (a: GithubUser, b: GithubUser) => a.type.localeCompare(b.type),
+            (a: GithubUser, b: GithubUser) => b.type.localeCompare(a.type),
           )
           break
         }
         default: {
           orderedList = response.data.items.sort(
-            (a: GithubUser, b: GithubUser) => a.login.localeCompare(b.login),
+            (a: GithubUser, b: GithubUser) => b.login.localeCompare(a.login),
           )
           break
         }
