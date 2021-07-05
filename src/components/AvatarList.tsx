@@ -9,7 +9,7 @@ import {
   Text,
   Image,
 } from 'grommet'
-import {GithubUser} from '../types/GithubUsers'
+import {GithubUser} from '../types/GithubUsersTypes'
 
 type Props = {
   githubUsers: GithubUser[] | undefined

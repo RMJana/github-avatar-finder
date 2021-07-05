@@ -1,8 +1,8 @@
 import React from 'react'
-
 import {Box, RadioButtonGroup} from 'grommet'
 import {Ascend, Descend} from 'grommet-icons'
-import {SortOption, useAppContext} from '../context/AppContext'
+import {useAppContext} from '../context/AppContext'
+import {SortOption} from '../types/AppContextTypes'
 
 type Props = {}
 

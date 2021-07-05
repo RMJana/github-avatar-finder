@@ -1,20 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react'
-
-export enum SortOption {
-  LoginASC = 'LoginASC',
-  LoginDESC = 'LoginDESC',
-  TypeASC = 'TypeASC',
-  TypeDESC = 'TypeDESC',
-}
-
-export type AppContextProps = {
-  githubLogin: string
-  submitted: boolean
-  usersPerPageChanged: boolean
-  sort: SortOption
-  usersPerPage: string
-  page: number
-}
+import {AppContextProps} from '../types/AppContextTypes'
 
 export const AppContext = React.createContext<
   [AppContextProps, Dispatch<SetStateAction<AppContextProps>>] | undefined

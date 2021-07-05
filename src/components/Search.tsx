@@ -1,6 +1,7 @@
 import React from 'react'
 import {Box, Button, Form, FormField, TextInput} from 'grommet'
-import {SortOption, useAppContext} from '../context/AppContext'
+import {useAppContext} from '../context/AppContext'
+import {SortOption} from '../types/AppContextTypes'
 
 type Props = {}
 

@@ -5,7 +5,8 @@ import {Results} from './components/Results'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {useState} from 'react'
-import {AppContext, AppContextProps, SortOption} from './context/AppContext'
+import {AppContext} from './context/AppContext'
+import {AppContextProps, SortOption} from './types/AppContextTypes'
 
 const theme = {
   global: {
