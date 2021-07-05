@@ -1,11 +1,11 @@
 import React from 'react'
 import {Grommet} from 'grommet'
 import {addDecorator} from '@storybook/react'
-import appContext from '../src/mocks/appContext.json'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {AppContext} from '../src/context/AppContext'
 import {initializeWorker, mswDecorator} from 'msw-storybook-addon'
+import {SortOption} from '../src/types/AppContextTypes'
 
 initializeWorker()
 addDecorator(mswDecorator)
@@ -24,7 +24,12 @@ const client = new QueryClient()
 
 addDecorator(Story => {
   const [context, setContext] = React.useState({
-    appContext,
+    githubLogin: '',
+    submitted: false,
+    sort: SortOption.LoginDESC,
+    usersPerPage: '9',
+    usersPerPageChanged: false,
+    page: 1,
   })
   return (
     <QueryClientProvider client={client}>

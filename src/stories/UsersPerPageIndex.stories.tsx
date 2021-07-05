@@ -1,6 +1,4 @@
 import {Meta, Story} from '@storybook/react/types-6-0'
-import {Search} from '../components/Search'
-import {SortRadioButtons} from '../components/SortRadioButtons'
 import {UsersPerPageIndex} from '../components/UsersPerPageIndex'
 
 export default {
